@@ -16,6 +16,7 @@ public class ProducerService {
 		System.out.println("[ProducerService] Processing message: ");
 
 		rabbitTemplate.convertAndSend(RabbitConstants.RELEVANT_FACTS_QUEUE, "Test message");
+		rabbitTemplate.convertAndSend(RabbitConstants.TICKERS_DETAILS_QUEUE, "Test message");
 	}
 
 }

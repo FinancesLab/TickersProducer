@@ -27,4 +27,7 @@ public class RabbitConstants {
 	public static final String TICKERS_DETAILS_DLX_EXCHANGE = TICKERS_DETAILS_QUEUE + ".dlx";
 	public static final String TICKERS_DETAILS_PARKING_LOT_EXCHANGE = TICKERS_DETAILS_QUEUE + "_exchange.parking-lot";
 
+	// Fanout Exchange for Main Tasks
+	public static final String MAIN_TASKS_FANOUT_EXCHANGE = "main_tasks_fanout";
+
 }

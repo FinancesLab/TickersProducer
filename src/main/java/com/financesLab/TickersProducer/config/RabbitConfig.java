@@ -56,13 +56,13 @@ public class RabbitConfig {
 	}
 
 	@Bean
-	FanoutExchange relevantFactsDeadLetterExchange() {
-		return new FanoutExchange(RELEVANT_FACTS_DLX_EXCHANGE, true, false);
+	DirectExchange relevantFactsDeadLetterExchange() {
+		return new DirectExchange(RELEVANT_FACTS_DLX_EXCHANGE, true, false);
 	}
 
 	@Bean
-	FanoutExchange relevantFactsParkingLotExchange() {
-		return new FanoutExchange(RELEVANT_FACTS_PARKING_LOT_EXCHANGE);
+	DirectExchange relevantFactsParkingLotExchange() {
+		return new DirectExchange(RELEVANT_FACTS_PARKING_LOT_EXCHANGE);
 	}
 
 	@Bean
@@ -72,12 +72,14 @@ public class RabbitConfig {
 
 	@Bean
 	Binding relevantFactsDeadLetterBinding() {
-		return BindingBuilder.bind(relevantFactsDeadLetterQueue()).to(relevantFactsDeadLetterExchange());
+		return BindingBuilder.bind(relevantFactsDeadLetterQueue()).to(relevantFactsDeadLetterExchange())
+				.with(RELEVANT_FACTS_DLQ);
 	}
 
 	@Bean
 	Binding relevantFactsParkingLotBinding() {
-		return BindingBuilder.bind(relevantFactsParkingLotQueue()).to(relevantFactsParkingLotExchange());
+		return BindingBuilder.bind(relevantFactsParkingLotQueue()).to(relevantFactsParkingLotExchange())
+				.with(RELEVANT_FACTS_PARKING_LOT);
 	}
 
 	@Bean
@@ -102,13 +104,13 @@ public class RabbitConfig {
 	}
 
 	@Bean
-	FanoutExchange tickersDetailsDeadLetterExchange() {
-		return new FanoutExchange(TICKERS_DETAILS_DLX_EXCHANGE, true, false);
+	DirectExchange tickersDetailsDeadLetterExchange() {
+		return new DirectExchange(TICKERS_DETAILS_DLX_EXCHANGE, true, false);
 	}
 
 	@Bean
-	FanoutExchange tickersDetailsParkingLotExchange() {
-		return new FanoutExchange(TICKERS_DETAILS_PARKING_LOT_EXCHANGE);
+	DirectExchange tickersDetailsParkingLotExchange() {
+		return new DirectExchange(TICKERS_DETAILS_PARKING_LOT_EXCHANGE);
 	}
 
 	@Bean
@@ -118,12 +120,29 @@ public class RabbitConfig {
 
 	@Bean
 	Binding tickersDetailsDeadLetterBinding() {
-		return BindingBuilder.bind(tickersDetailsDeadLetterQueue()).to(tickersDetailsDeadLetterExchange());
+		return BindingBuilder.bind(tickersDetailsDeadLetterQueue()).to(tickersDetailsDeadLetterExchange())
+				.with(TICKERS_DETAILS_DLQ);
 	}
 
 	@Bean
 	Binding tickersDetailsParkingLotBinding() {
-		return BindingBuilder.bind(tickersDetailsParkingLotQueue()).to(tickersDetailsParkingLotExchange());
+		return BindingBuilder.bind(tickersDetailsParkingLotQueue()).to(tickersDetailsParkingLotExchange())
+				.with(TICKERS_DETAILS_PARKING_LOT);
+	}
+
+	@Bean
+	FanoutExchange mainTasksFanoutExchange() {
+		return new FanoutExchange(MAIN_TASKS_FANOUT_EXCHANGE);
+	}
+
+	@Bean
+	Binding tickersDetailsMainTasksFanoutBinding() {
+		return BindingBuilder.bind(tickersDetailsQueue()).to(mainTasksFanoutExchange());
+	}
+
+	@Bean
+	Binding relevatFactMainTasksFanoutBinding() {
+		return BindingBuilder.bind(relevantFactsQueue()).to(mainTasksFanoutExchange());
 	}
 
 }

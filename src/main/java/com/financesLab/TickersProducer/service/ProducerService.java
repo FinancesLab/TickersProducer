@@ -5,10 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.financesLab.TickersProducer.config.RabbitConstants;
+import com.financesLab.TickersProducer.entity.TickerEntity;
 import com.financesLab.TickersProducer.repository.TickersRepository;
+import com.google.gson.Gson;
 
 @Service
 public class ProducerService {
+
+	final Gson gson = new Gson();
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -19,10 +23,11 @@ public class ProducerService {
 	public void process() {
 		System.out.println("[ProducerService] Processing message: ");
 
-		tickersRepository.findAll().forEach(ticker -> System.out.println(ticker.getTickerId()));
+		for (TickerEntity ticker : tickersRepository.findAll()) {
+			String json = gson.toJson(ticker);
+			rabbitTemplate.convertAndSend(RabbitConstants.MAIN_TASKS_FANOUT_EXCHANGE, "", json);
+		}
 
-		rabbitTemplate.convertAndSend(RabbitConstants.RELEVANT_FACTS_QUEUE, "Test message");
-		rabbitTemplate.convertAndSend(RabbitConstants.TICKERS_DETAILS_QUEUE, "Test message");
 	}
 
 }

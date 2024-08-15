@@ -23,7 +23,7 @@ public class ProducerService {
 	public void process() {
 		System.out.println("[ProducerService] Processing message: ");
 
-		for (TickerEntity ticker : tickersRepository.findAll()) {
+		for (TickerEntity ticker : tickersRepository.findAllWithLabels()) {
 			String json = gson.toJson(ticker);
 			rabbitTemplate.convertAndSend(RabbitConstants.MAIN_TASKS_FANOUT_EXCHANGE, "", json);
 		}

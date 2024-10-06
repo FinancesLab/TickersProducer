@@ -9,7 +9,7 @@ import com.financesLab.TickersProducer.entity.TickerEntity;
 
 public interface TickersRepository extends JpaRepository<TickerEntity, String> {
 
-	@Query("SELECT new TickerEntity(t.tickerId, t.ticker, ty.label, s.label, m.label, t.companyName) "
+	@Query("SELECT new TickerEntity(t.tickerId, t.ticker, ty.label, s.label, m.label, t.companyName, t.hasRelevantFacts) "
 			+ "FROM TickerEntity t " //
 			+ "JOIN TypeEntity ty ON t.typeId = ty.id " //
 			+ "JOIN SectorEntity s ON t.sectorId = s.id " //

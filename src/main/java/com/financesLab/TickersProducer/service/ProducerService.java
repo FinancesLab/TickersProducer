@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 import com.financesLab.TickersProducer.config.RabbitConstants;
 import com.financesLab.TickersProducer.entity.TickerEntity;
 import com.financesLab.TickersProducer.repository.TickersRepository;
-import com.google.gson.Gson;
+import com.financesLab.TickersProducer.util.JsonUtils;
 
 @Service
 public class ProducerService {
-
-	final Gson gson = new Gson();
 
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -24,8 +22,14 @@ public class ProducerService {
 		System.out.println("[ProducerService] Processing message: ");
 
 		for (TickerEntity ticker : tickersRepository.findAllWithLabels()) {
-			String json = gson.toJson(ticker);
-			rabbitTemplate.convertAndSend(RabbitConstants.MAIN_TASKS_FANOUT_EXCHANGE, "", json);
+			String json = JsonUtils.toJson(ticker);
+			if (ticker.isHasRelevantFacts()) {
+				rabbitTemplate.convertAndSend(RabbitConstants.MAIN_TASKS_FANOUT_EXCHANGE, "", json);
+				continue;
+			}
+
+			rabbitTemplate.convertAndSend(RabbitConstants.TICKERS_DETAILS_EXCHANGE,
+					RabbitConstants.TICKERS_DETAILS_QUEUE, json);
 		}
 
 	}

@@ -37,7 +37,8 @@ public class RabbitConfig {
 	@Bean
 	Queue relevantFactsQueue() {
 		return QueueBuilder.durable(RELEVANT_FACTS_QUEUE)
-				.withArgument("x-dead-letter-exchange", RELEVANT_FACTS_DLX_EXCHANGE).build();
+				.withArgument("x-dead-letter-exchange", RELEVANT_FACTS_DLX_EXCHANGE)
+				.withArgument("x-dead-letter-routing-key", RELEVANT_FACTS_DLQ).build();
 	}
 
 	@Bean

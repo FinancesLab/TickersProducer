@@ -14,7 +14,7 @@ public class RabbitConstants {
 	// Exchanges
 	public static final String RELEVANT_FACTS_EXCHANGE = RELEVANT_FACTS_QUEUE + "_exchange";
 	public static final String RELEVANT_FACTS_DLX_EXCHANGE = RELEVANT_FACTS_QUEUE + ".dlx";
-	public static final String RELEVANT_FACTS_PARKING_LOT_EXCHANGE = RELEVANT_FACTS_QUEUE + "_exchange.parking-lot";
+	public static final String RELEVANT_FACTS_PARKING_LOT_EXCHANGE = RELEVANT_FACTS_QUEUE + ".plx";
 
 	// Tickers Details
 	// Queues
